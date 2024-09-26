@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>登录</title>
+</head>
+<body>
+    <h1>登录页面</h1>
+    <form id="login-form" method="post" action="/login">
+        <label for="username">用户名:</label>
+        <input type="text" id="username" name="username" required>
+        <br>
+        <label for="password">密码:</label>
+        <input type="password" id="password" name="password" required>
+        <br>
+        <input type="submit" value="登录">
+    </form>
+    <p id="error-message" style="color: red;"></p>
+    <script>
+        document.getElementById('login-form').onsubmit = async function(event) {
+            event.preventDefault();
+            const formData = new FormData(event.target);
+            const response = await fetch('/login', {
+                method: 'POST',
+                body: formData
+            });
+            const result = await response.json();
+            if (result.success) {
+                window.location.href = '/dashboard';
+            } else {
+                document.getElementById('error-message').textContent = '用户名或密码错误';
+            }
+        }
+    </script>
+</body>
+</html>

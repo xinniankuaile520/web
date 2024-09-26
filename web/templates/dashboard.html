@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>用户信息</title>
+</head>
+<body>
+    <h1>欢迎, <span id="username"></span></h1>
+    <button onclick="navigateTo('screen1')">进入大屏1</button>
+    <button onclick="navigateTo('screen2')">进入大屏2</button>
+    <button onclick="logout()">登出</button>
+    <script>
+        async function checkLogin() {
+            const response = await fetch('/check_login');
+            const result = await response.json();
+            if (!result.logged_in) {
+                window.location.href = '/';
+            } else {
+                document.getElementById('username').textContent = result.username;
+            }
+        }
+
+        function navigateTo(screen) {
+            window.location.href = '/' + screen;
+        }
+
+        async function logout() {
+            await fetch('/logout', { method: 'POST' });
+            window.location.href = '/';
+        }
+
+        checkLogin();
+    </script>
+</body>
+</html>
